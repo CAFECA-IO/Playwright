@@ -1,0 +1,22 @@
+{
+    "name": "Playwright",
+    "image": "mcr.microsoft.com/playwright:v1.37.0-jammy",
+    "postCreateCommand": "npm install && npm run build && apt-get update && apt-get install -y software-properties-common && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" && apt-get install -y docker-ce-cli",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "runArgs": [
+        "-v", "/var/run/docker.sock:/var/run/docker.sock"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-playwright.playwright",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"GitHub.copilot-labs",
+				"dbaeumer.vscode-eslint"
+			]
+		}
+	}
+}
