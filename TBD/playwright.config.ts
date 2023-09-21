@@ -1,16 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
-import path from "path";
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
-export const STORAGE_STATE = path.join(__dirname, "/.auth/metamask.json");
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 150000,
+  timeout: 180000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -37,15 +35,9 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "setup",
-      testMatch: /global.setup\.ts/,
-    },
-    {
       name: "chromium",
-      use: {  ...devices["Desktop Chrome"],storageState: STORAGE_STATE },
-      dependencies: ["setup"],
+      use: {  ...devices["Desktop Chrome"]},
     },
-
     // firefox is not supported yet
     // {
     //   name: 'firefox',

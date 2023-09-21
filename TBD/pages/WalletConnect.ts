@@ -1,65 +1,88 @@
-import { test, expect } from "../";
+import { test as setup, expect } from "../fixtures";
 import metamask from "../.auth/metamask.json";
+import { type Locator, type Page, type BrowserContext } from "@playwright/test";
+import test from "node:test";
 
-const authFile = 'playwright/.auth/user.json';
+export class WalletConnect {
+  readonly page: Page;
+  // readonly getAnncmnt : Locator;
+  readonly context: BrowserContext;
 
-test("Connect Metamask", async ({ page, extensionId, context }) => {
-    await page.goto(
-      "chrome-extension://nmmdibjclikggaikiilpbdmihakbfofm/home.html"
+  constructor(page: Page, context: BrowserContext) {
+    this.page = page;
+    this.context = context;
+    // this.getAnncmnt = page.getByRole('button', { name: 'OK' })
+  }
+
+  async connectMetamask() {
+    await this.page.waitForTimeout(3000);
+    await this.page.goto(
+      "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/home.html"
     );
-    await page.locator("#onboarding__terms-checkbox").click();
+    await this.page.locator("#onboarding__terms-checkbox").click();
     await expect
       .soft(
-        page.locator(
+        this.page.locator(
           "#app-content > div > div.mm-box.main-container-wrapper > div > div > div > ul > li:nth-child(3) > button"
         )
       )
       .toHaveText("Import an existing wallet");
-    await page
+    await this.page
       .locator(
         "#app-content > div > div.mm-box.main-container-wrapper > div > div > div > ul > li:nth-child(3) > button"
       )
       .click();
-    await page.getByRole("button", { name: "I agree" }).click();
+    await this.page.getByRole("button", { name: "I agree" }).click();
     for (let i = 0; i < 12; i++) {
-      await page
+      await this.page
         .locator("#import-srp__srp-word-" + i)
         .fill(metamask["srp-word"][i]);
     }
-    await page
+    await this.page
       .getByRole("button", { name: "Confirm Secret Recovery Phrase" })
       .click();
-    await page.getByTestId("create-password-new").fill(metamask["new-password"]);
-    await page
+    await this.page
+      .getByTestId("create-password-new")
+      .fill(metamask["new-password"]);
+    await this.page
       .getByTestId("create-password-confirm")
       .fill(metamask["new-password"]);
-    await page.getByTestId("create-password-terms").click();
-    await page.getByRole("button", { name: "Import My wallet" }).click();
-    await page.getByRole("button", { name: "Got it" }).click();
-    await page.getByTestId("pin-extension-next").click();
-    await page.getByTestId("pin-extension-done").click(); 
-    await page.waitForTimeout(2000);
-    await page.getByTestId("popover-close").click();
-    
-    await page.goto("https://tidebit-defi.com/");
-    page.getByRole("button", { name: "OK" }).click();
-    const pagePromise1 = context.newPage();
-    await page.getByRole("button", { name: "Wallet Connect" }).click();
-    await page.waitForTimeout(2000);
-    await page
+    await this.page.getByTestId("create-password-terms").click();
+    await this.page.getByRole("button", { name: "Import My wallet" }).click();
+    await this.page.getByRole("button", { name: "Got it" }).click();
+    await this.page.getByTestId("pin-extension-next").click();
+    await this.page.getByTestId("pin-extension-done").click();
+    await this.page.waitForTimeout(2000);
+    await this.page.getByTestId("popover-close").click();
+  }
+  async connectWallet() {
+    await this.page.goto("https://tidebit-defi.com/");
+    this.page.getByRole("button", { name: "OK" }).click();
+    const pagePromise = this.context.newPage();
+    await this.page.getByRole("button", { name: "Wallet Connect" }).click();
+    await this.page.waitForTimeout(2000);
+    await this.page
       .locator("div")
       .filter({ hasText: /^MetaMask$/ })
       .nth(1)
       .click();
-    const newPage1 = await pagePromise1;
-    await newPage1.goto("chrome-extension://nmmdibjclikggaikiilpbdmihakbfofm/popup.html");
-    await newPage1.getByTestId("page-container-footer-next").click();
-    await newPage1.getByTestId("page-container-footer-next").click();
-    const pagePromise2 = context.newPage();
-    await page.getByRole("button", { name: "send request" }).click();
-    const newPage2 = await pagePromise2;
-    await newPage2.goto("chrome-extension://nmmdibjclikggaikiilpbdmihakbfofm/popup.html");
-    await newPage2.getByTestId("signature-request-scroll-button").click();
-    await newPage2.getByTestId("page-container-footer-next").click();
-    // await expect.soft(newPage2).toHaveTitle(/MetaMask Notification/);
-    await page.getByRole("button", { name: "done" }).click();
+    const newPage = await pagePromise;
+    await newPage.goto(
+      "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html"
+    );
+    await newPage.getByTestId("page-container-footer-next").click();
+    await newPage.getByTestId("page-container-footer-next").click();
+    
+  }
+  async sendRequest() {
+    const pagePromise = this.context.newPage();
+    await this.page.getByRole("button", { name: "send request" }).click();
+    const newPage = await pagePromise;
+    await newPage.goto(
+      "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html"
+    );
+    await newPage.getByTestId("signature-request-scroll-button").click();
+    await newPage.getByTestId("page-container-footer-next").click();
+    await this.page.getByRole("button", { name: "done" }).click();
+  }
+}

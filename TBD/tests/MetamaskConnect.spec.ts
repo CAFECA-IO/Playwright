@@ -2,6 +2,7 @@ import { test, expect } from "../fixtures";
 import metamask from "../.auth/metamask.json";
 
 test("Connect Metamask", async ({ page, extensionId, context }) => {
+  await page.waitForTimeout(3000);
   await page.goto(
     "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/home.html"
   );
@@ -36,14 +37,12 @@ test("Connect Metamask", async ({ page, extensionId, context }) => {
   await page.getByRole("button", { name: "Got it" }).click();
   await page.getByTestId("pin-extension-next").click();
   await page.getByTestId("pin-extension-done").click(); 
-  await page.waitForTimeout(2000);
   await page.getByTestId("popover-close").click();
   
   await page.goto("https://tidebit-defi.com/");
   page.getByRole("button", { name: "OK" }).click();
   const pagePromise1 = context.newPage();
   await page.getByRole("button", { name: "Wallet Connect" }).click();
-  await page.waitForTimeout(2000);
   await page
     .locator("div")
     .filter({ hasText: /^MetaMask$/ })
