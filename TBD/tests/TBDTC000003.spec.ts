@@ -7,9 +7,11 @@ test("進入 TideBit-DeFi 首頁，檢查登入狀態為未登入，切換語言
 }) => {
   const landingPage = new LandingPage(page);
   landingPage.goto();
+  landingPage.clickAnncmnt();
   await expect
     .soft(page.getByRole("button", { name: "Wallet Connect" }))
     .toHaveText("Wallet Connect");
+    page.waitForTimeout(2000);
 });
 
 test("點擊導覽列的上全部按鈕", async ({ page }) => {

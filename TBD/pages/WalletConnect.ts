@@ -1,12 +1,11 @@
-import { test as setup, expect } from "./fixtures";
-import metamask from "./.auth/metamask.json";
-import { STORAGE_STATE } from './playwright.config';
+import { test, expect } from "../";
+import metamask from "../.auth/metamask.json";
 
+const authFile = 'playwright/.auth/user.json';
 
-
-setup("Connect Metamask", async ({ page, extensionId, context }) => {
+test("Connect Metamask", async ({ page, extensionId, context }) => {
     await page.goto(
-      "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/home.html"
+      "chrome-extension://nmmdibjclikggaikiilpbdmihakbfofm/home.html"
     );
     await page.locator("#onboarding__terms-checkbox").click();
     await expect
@@ -53,16 +52,14 @@ setup("Connect Metamask", async ({ page, extensionId, context }) => {
       .nth(1)
       .click();
     const newPage1 = await pagePromise1;
-    await newPage1.goto("chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html");
+    await newPage1.goto("chrome-extension://nmmdibjclikggaikiilpbdmihakbfofm/popup.html");
     await newPage1.getByTestId("page-container-footer-next").click();
     await newPage1.getByTestId("page-container-footer-next").click();
     const pagePromise2 = context.newPage();
     await page.getByRole("button", { name: "send request" }).click();
     const newPage2 = await pagePromise2;
-    await newPage2.goto("chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html");
+    await newPage2.goto("chrome-extension://nmmdibjclikggaikiilpbdmihakbfofm/popup.html");
     await newPage2.getByTestId("signature-request-scroll-button").click();
     await newPage2.getByTestId("page-container-footer-next").click();
+    // await expect.soft(newPage2).toHaveTitle(/MetaMask Notification/);
     await page.getByRole("button", { name: "done" }).click();
-
-    await page.context().storageState({ path: STORAGE_STATE });
-  });
