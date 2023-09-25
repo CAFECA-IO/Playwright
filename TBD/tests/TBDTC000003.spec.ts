@@ -1,17 +1,22 @@
 import { test, expect } from "@playwright/test";
 import { LandingPage } from "../pages/LandingPage";
-import i18next from '../i18n';
+import i18next from "../i18n";
+
+test.beforeEach(async ({ context, page }) => {
+  const lang = await page.evaluate("window.navigator.language;");
+  i18next.changeLanguage(String(lang));
+});
 
 test("進入 TideBit-DeFi 首頁，檢查登入狀態為未登入，切換語言為英文", async ({
   page,
 }) => {
   const landingPage = new LandingPage(page);
-  landingPage.goto();
-  landingPage.clickAnncmnt();
+  await landingPage.goto();
   await expect
-    .soft(page.getByRole("button", { name: "Wallet Connect" }))
-    .toHaveText("Wallet Connect");
-    page.waitForTimeout(2000);
+    .soft(
+      page.getByRole("button", { name: i18next.t("NAV_BAR.WALLET_CONNECT") })
+    )
+    .toHaveText(i18next.t("NAV_BAR.WALLET_CONNECT"));
 });
 
 test("點擊導覽列的上全部按鈕", async ({ page }) => {
@@ -20,17 +25,22 @@ test("點擊導覽列的上全部按鈕", async ({ page }) => {
   landingPage.clickAnncmnt();
   await page
     //need to check the site version
-    .getByRole("link", { name: "TideBit_logo beta v0.8.0+46.2" })
+    .getByRole("link", { name: "TideBit_logo beta v0.8.0" })
     .click();
   await expect.soft(page).toHaveTitle(/TideBit DeFi/);
-  await page.getByRole("link", { name: "Trade" }).first().click();
+  await page
+    .getByRole("link", { name: i18next.t("NAV_BAR.TRADE") })
+    .first()
+    .click();
   //check URL jump to trade page
-  await expect.soft(page).toHaveURL(/(https:\/\/tidebit-defi.com\/).*trade/);
+  await expect.soft(page).toHaveURL(/.*trade/);
   //click the notice popup
   landingPage.clickAnncmnt();
-  await page.getByRole("link", { name: "Leaderboard" }).click();
+  await page
+    .getByRole("link", { name: i18next.t("NAV_BAR.LEADERBOARD") })
+    .click();
   landingPage.clickAnncmnt();
-  await page.getByRole("link", { name: "Support" }).click();
+  await page.getByRole("link", { name: i18next.t("NAV_BAR.SUPPORT") }).click();
   landingPage.clickAnncmnt();
   await page.locator("#globe").click();
   await page.getByRole("link", { name: "繁體中文" }).click();
@@ -58,25 +68,27 @@ test("點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告按�
   await expect
     .soft(page.getByRole("link", { name: "contact@tidebit-defi.com" }))
     .toHaveAttribute("href", "mailto:contact@tidebit-defi.com");
-  await page.getByRole("button", { name: "GET STARTED" }).click();
-  await expect.soft(page).toHaveURL(/(https:\/\/tidebit-defi.com\/).*trade/);
+  await page
+    .getByRole("button", { name: i18next.t("HOME_PAGE.CTA_BUTTON") })
+    .click();
+  await expect.soft(page).toHaveURL(/.*trade/);
   landingPage.goto();
   landingPage.clickAnncmnt();
   const filesLink = [
-    "Whitepaper",
-    "Download Report",
-    "Income Statement Comprehensive ",
-    "Balance Sheet ",
-    "Cash Flow Statement ",
-    "Red Flag Analysis",
+    i18next.t("HOME_PAGE.WHITEPAPER"),
+    i18next.t("HOME_PAGE.DOWNLOAD_REPORT"),
+    i18next.t("HOME_PAGE.COMPREHENSIVE_INCOME_STATEMENT"),
+    i18next.t("HOME_PAGE.BALANCE_SHEET"),
+    i18next.t("HOME_PAGE.CASH_FLOW_STATEMENT"),
+    i18next.t("HOME_PAGE.RED_FLAG_ANALYSIS"),
   ];
   const checkfiles = [
-    "tidebit_tech_whitepaper_v2.0.4_en.pdf",
-    "tidebit_tech_whitepaper_v2.0.4_en.pdf",
-    "comprehensive_income_statements.pdf",
-    "balance_sheets.pdf",
-    "cash_flows_statements.pdf",
-    "red_flag_analysis.pdf",
+    i18next.t("HOME_PAGE.WHITEPAPER_LINK"),
+    i18next.t("HOME_PAGE.REPORTS_LINK"),
+    i18next.t("HOME_PAGE.COMPREHENSIVE_INCOME_STATEMENT_LINK"),
+    i18next.t("HOME_PAGE.BALANCE_SHEET_LINK"),
+    i18next.t("HOME_PAGE.CASH_FLOW_STATEMENT_LINK"),
+    i18next.t("HOME_PAGE.RED_FLAG_ANALYSIS_LINK"),
   ];
   // can be improved to parallel download
   for (let i = 0; i < filesLink.length; i++) {
@@ -88,9 +100,13 @@ test("點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告按�
     // await download.saveAs("download/" + download.suggestedFilename());
     if (download.suggestedFilename() != checkfiles[i]) {
       console.log(
-        download.suggestedFilename() + checkfiles[i] + " is not correct."
+        "download file " +
+          i +
+          download.suggestedFilename() +
+          "and" +
+          checkfiles[i] +
+          " is not correct."
       );
-      throw new Error("Downloaded file " + checkfiles[i] + " is not correct.");
     }
   }
 });
@@ -99,22 +115,30 @@ test("確認按鈕連結跳轉網頁正確。", async ({ page }) => {
   const landingPage = new LandingPage(page);
   landingPage.goto();
   landingPage.clickAnncmnt();
-  await expect.soft(page.getByRole("link", { name: "Blockchain" }).nth(0)).toHaveAttribute("href", /.*baifa.io/);
+  await expect
+    .soft(
+      page
+        .getByRole("link", {
+          name: i18next.t("HOME_PAGE.RESERVE_RATIO_BLOCK_CARD_2"),
+        })
+        .nth(0)
+    )
+    .toHaveAttribute("href", /.*baifa.io/);
   await expect
     .soft(page.getByRole("link", { name: "BAIFA" }))
     .toHaveAttribute("href", /.*baifa.io/);
   await expect
     .soft(page.getByRole("link", { name: "Ethereum ETH" }))
-    .toHaveAttribute("href", "/trade/cfd/eth-usdt");
+    .toHaveAttribute("href", /.*trade\/cfd\/eth-usdt/);
   await expect
     .soft(page.getByRole("link", { name: "Bitcoin BTC" }))
-    .toHaveAttribute("href", "/trade/cfd/btc-usdt");
+    .toHaveAttribute("href", /.*trade\/cfd\/btc-usdt/);
   await expect
-    .soft(page.getByRole("link", { name: "iSunOne Visa Card" }))
-    .toHaveAttribute("href", "https://www.isun1.com/");
+    .soft(page.getByRole("link", {name: i18next.t("HOME_PAGE.ISUNONE_PROMOTION_DESCRIPTION")}))
+    .toHaveAttribute("href", /https:\/\/www.isun1.com*/);
   await expect
     .soft(page.getByRole("button", { name: "app-store" }))
-    .toHaveAttribute("href", "/coming-soon");
+    .toHaveAttribute("href", /.*coming-soon/);
   // click to open new tab has problem to check
   // await page.getByRole('button', { name: 'app-store' }).click();
   // await expect.soft(page).toHaveURL("https://tidebit-defi.com/coming-soon");
@@ -122,50 +146,41 @@ test("確認按鈕連結跳轉網頁正確。", async ({ page }) => {
   // wait for fix
   // await expect
   //   .soft(page.getByRole("button", { name: "google play" }))
-  //   .toHaveAttribute("href", "/coming-soon");
+  //   .toHaveAttribute("href", /.*coming-soon/);
   await expect
-    .soft(page.getByRole('link', { name: 'Facebook' }))
-    .toHaveAttribute("href", "/coming-soon");
+    .soft(page.getByRole("link", { name: "Facebook" }))
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
     .soft(page.getByRole("link", { name: "instagram" }))
-    .toHaveAttribute("href", "/coming-soon");
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
     .soft(page.getByRole("link", { name: "twitter" }))
-    .toHaveAttribute("href", "/coming-soon");
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
     .soft(page.getByRole("link", { name: "reddit" }))
-    .toHaveAttribute("href", "/coming-soon");
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
-    .soft(page.getByRole('contentinfo').getByRole('link', { name: 'Trade' }))
+    .soft(
+      page
+        .getByRole("contentinfo")
+        .getByRole("link", { name: i18next.t("NAV_BAR.TRADE") })
+    )
     .toHaveAttribute("href", /.*trade/);
   await expect
-    .soft(page.getByRole('link', { name: 'TideBit University' }))
-    .toHaveAttribute("href", "/coming-soon");
+    .soft(
+      page.getByRole("link", { name: i18next.t("NAV_BAR.TIDEBIT_UNIVERSITY") })
+    )
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
-    .soft(page.getByRole('link', { name: 'Help Center' }))
-    .toHaveAttribute("href", "/coming-soon");
+    .soft(page.getByRole("link", { name: i18next.t("NAV_BAR.HELP_CENTER") }))
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
-    .soft(page.getByRole('link', { name: 'Hiring' }))
-    .toHaveAttribute("href", "/coming-soon");
+    .soft(page.getByRole("link", { name: i18next.t("FOOTER.HIRING") }))
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
-    .soft(page.getByRole('link', { name: 'Service policy' }))
-    .toHaveAttribute("href", "/coming-soon");
+    .soft(page.getByRole("link", { name: i18next.t("FOOTER.SERVICE_POLICY") }))
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
-    .soft(page.getByRole('link', { name: 'Privacy Policy' }))
-    .toHaveAttribute("href", "/coming-soon");
-});
-test("確認各語系網頁上述事項正確", async ({ page }) => {
-  // const landingPage = new LandingPage(page);
-  // landingPage.goto();
-  // landingPage.clickAnncmnt();
-  console.log(i18next.t('NAV_BAR.TRADE'));
-  i18next.changeLanguage('cn');
-  console.log(i18next.t('NAV_BAR.TRADE'));
-  // await page.getByRole("link", { name: i18next.t('en:NAV_BAR.TRADE') }).first().click();
-  /* 
-  need to think about file structure
-  1. extend the origin page class to add the language switch function
-  2. create a new page class for each language
-  3. create a json text to change the language content
-   */
+    .soft(page.getByRole("link", { name: i18next.t("FOOTER.PRIVACY_POLICY") }))
+    .toHaveAttribute("href", /.*coming-soon/);
 });

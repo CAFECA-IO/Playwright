@@ -1,11 +1,17 @@
 import { test, expect } from "../fixtures";
 import metamask from "../.auth/metamask.json";
+import i18next from "../i18n";
 
 test("Connect Metamask", async ({ page, extensionId, context }) => {
+  const lang = await page.evaluate("window.navigator.language;");
+  i18next.changeLanguage(String(lang));
   await page.waitForTimeout(3000);
   await page.goto(
-    "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/home.html"
+    "chrome://extensions/"
   );
+  await page.locator("#devMode").click();
+  extensionId= (await page.locator("#extension-id").textContent()).substring(3);
+  await page.goto("chrome-extension://"+extensionId+"/home.html");
   await page.locator("#onboarding__terms-checkbox").click();
   await expect
     .soft(
@@ -36,28 +42,41 @@ test("Connect Metamask", async ({ page, extensionId, context }) => {
   await page.getByRole("button", { name: "Import My wallet" }).click();
   await page.getByRole("button", { name: "Got it" }).click();
   await page.getByTestId("pin-extension-next").click();
-  await page.getByTestId("pin-extension-done").click(); 
+  await page.getByTestId("pin-extension-done").click();
   await page.getByTestId("popover-close").click();
-  
-  await page.goto("https://tidebit-defi.com/");
-  page.getByRole("button", { name: "OK" }).click();
+
+  await page.goto("./");
+  page
+    .getByRole("button", { name: i18next.t("ANNOUNCEMENT_MODAL.OK_BUTTON") })
+    .click();
   const pagePromise1 = context.newPage();
-  await page.getByRole("button", { name: "Wallet Connect" }).click();
+  await page
+    .getByRole("button", { name: i18next.t("NAV_BAR.WALLET_CONNECT") })
+    .click();
   await page
     .locator("div")
     .filter({ hasText: /^MetaMask$/ })
     .nth(1)
     .click();
   const newPage1 = await pagePromise1;
-  await newPage1.goto("chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html");
+  await newPage1.goto(
+    "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html"
+  );
   await newPage1.getByTestId("page-container-footer-next").click();
   await newPage1.getByTestId("page-container-footer-next").click();
   const pagePromise2 = context.newPage();
-  await page.getByRole("button", { name: "send request" }).click();
+  await page
+    .getByRole("button", {
+      name: i18next.t("WALLET_PANEL.SEND_REQUESTS_BUTTON"),
+    })
+    .click();
   const newPage2 = await pagePromise2;
-  await newPage2.goto("chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html");
+  await newPage2.goto(
+    "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html"
+  );
   await newPage2.getByTestId("signature-request-scroll-button").click();
   await newPage2.getByTestId("page-container-footer-next").click();
-  await page.getByRole("button", { name: "done" }).click();
-  
+  await page
+    .getByRole("button", { name: i18next.t("WALLET_PANEL.DONE_BUTTON") })
+    .click();
 });

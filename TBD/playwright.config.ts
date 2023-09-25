@@ -36,7 +36,28 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: {  ...devices["Desktop Chrome"]},
+      use: {
+        locale: "en",
+        ...devices["Desktop Chrome"],
+        baseURL: "https://tidebit-defi.com/",
+      },
+    },
+    {
+      name: "chromium TW",
+      use: {
+        locale: "tw",
+        ...devices["Desktop Chrome"],
+        baseURL: "https://tidebit-defi.com/tw/",
+      },
+    },
+    {
+      name: "chromium CN",
+      use: {
+        colorScheme: 'dark',
+        ...devices["Desktop Chrome"],
+        baseURL: "https://tidebit-defi.com/cn/",
+        locale: "cn",
+      },
     },
     // firefox is not supported yet
     // {
