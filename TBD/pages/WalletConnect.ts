@@ -1,11 +1,10 @@
 import { test as setup, expect } from "../fixtures";
 import metamask from "../.auth/metamask.json";
-import { type Locator, type Page, type BrowserContext } from "@playwright/test";
+import { type Page, type BrowserContext } from "@playwright/test";
 import i18next from "../i18n";
 
 export class WalletConnect {
   readonly page: Page;
-  // readonly getAnncmnt : Locator;
   readonly context: BrowserContext;
   extensionId: string;
 
@@ -138,13 +137,13 @@ export class WalletConnect {
     const hasDeposit = await this.page
       .getByRole("button", { name: i18next.t("POSITION_MODAL.VIEW_ON_BUTTON") })
       .isVisible();
-    // profile button
     if (hasDeposit) {
       console.log("deposit success");
       this.page.reload();
       this.page
       .getByRole("button", { name: i18next.t("ANNOUNCEMENT_MODAL.OK_BUTTON") })
       .click();
+      // profile button
       await this.page
         .locator(
           "#__next > div > div.w-full.text-center> nav > div > div > div> div.mr-5.inline-flex > div > button"

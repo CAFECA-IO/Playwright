@@ -53,7 +53,6 @@ export default defineConfig({
     {
       name: "chromium CN",
       use: {
-        colorScheme: 'dark',
         ...devices["Desktop Chrome"],
         baseURL: "https://tidebit-defi.com/cn/",
         locale: "cn",
