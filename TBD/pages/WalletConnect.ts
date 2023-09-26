@@ -20,7 +20,7 @@ export class WalletConnect {
     await this.page.locator("#devMode").click();
     this.extensionId = (
       await this.page.locator("#extension-id").textContent()
-    ).substring(3);
+    ).substring(3).trim();
   }
 
   async connectMetamask() {
