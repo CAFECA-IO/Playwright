@@ -7,7 +7,7 @@ test.beforeEach(async ({ context, page }) => {
   i18next.changeLanguage(String(lang));
 });
 
-test("進入 TideBit-DeFi 首頁，檢查登入狀態為未登入，切換語言為英文", async ({
+test("1. 進入 TideBit-DeFi 首頁，檢查登入狀態為未登入，切換語言為英文", async ({
   page,
 }) => {
   const landingPage = new LandingPage(page);
@@ -19,7 +19,7 @@ test("進入 TideBit-DeFi 首頁，檢查登入狀態為未登入，切換語言
     .toHaveText(i18next.t("NAV_BAR.WALLET_CONNECT"));
 });
 
-test("點擊導覽列的上全部按鈕", async ({ page }) => {
+test("2. 點擊導覽列的上全部按鈕", async ({ page }) => {
   const landingPage = new LandingPage(page);
   landingPage.goto();
   landingPage.clickAnncmnt();
@@ -58,7 +58,7 @@ test("點擊導覽列的上全部按鈕", async ({ page }) => {
     .toHaveText("Happy Birthday to TideBit");
 });
 
-test("點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告按鈕下載", async ({
+test("3. 點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告按鈕下載", async ({
   page,
 }) => {
   const landingPage = new LandingPage(page);
@@ -111,7 +111,7 @@ test("點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告按�
   }
 });
 
-test("確認按鈕連結跳轉網頁正確。", async ({ page }) => {
+test("4. 確認按鈕連結跳轉網頁正確。", async ({ page }) => {
   const landingPage = new LandingPage(page);
   landingPage.goto();
   landingPage.clickAnncmnt();

@@ -83,11 +83,11 @@ test("4. 點擊任一篇ETH新聞後，下滑至最下面點擊分享至FB", asy
   /* 
   It's better to test manually.
   */
-  // await tradePage.clickAnncmnt();
-  // const pagePromise = context.waitForEvent('page');
-  // await page.getByRole('img', { name: 'FACEBOOK', exact: true }).click();
-  // const newPage = await pagePromise;
-  // expect.soft(newPage).toHaveURL(/.*facebook.com\/.*/);
+  await tradePage.clickAnncmnt();
+  const pagePromise = context.waitForEvent('page');
+  await page.getByRole('img', { name: 'FACEBOOK', exact: true }).click();
+  const newPage = await pagePromise;
+  expect.soft(newPage).toHaveURL(/.*facebook.com\/.*/);
 });
 test("5. 回到「交易」頁面後，在「看漲」和「看跌」各開一個0.05ETH的倉位，並到「倉位」的 tab確認", async ({ page, extensionId, context }) => {
   const walletConnect = new WalletConnect(page, context);
@@ -128,6 +128,13 @@ test("7. 點擊倒數計時的圈圈，將持倉關閉，並查看「歷史紀�
   await tradePage.clickAnncmnt();
   await tradePage.closePosition(walletConnect.extensionId);
   await page.getByRole('button', { name: i18next.t("TRADE_PAGE.POSITION_TAB_HISTORY") }).click();
-  const date = await page.locator("#__next > div > main > div > div:nth-child(3) > div > div > div > div > div:nth-last-child(1) > div > div > div > div").textContent();
-  console.log(date);
+  const minutetext = await page.locator("#__next > div > main > div > div.pointer-events-none.fixed.right-0.top-82px.z-10.flex.overflow-x-hidden.overflow-y-hidden.outline-none > div > div > div > div > div:nth-child(1) > div.mt-3.text-xs > div > div.w-48px > div:nth-child(2)").textContent();
+  const minute = Number(minutetext.substring(3))
+  console.log(minute)
+  if(new Date().getUTCMinutes()>0){
+    expect(new Date().getUTCMinutes()-minute).toBeGreaterThanOrEqual(0);
+    expect(new Date().getUTCMinutes()-minute).toBeLessThanOrEqual(2);
+  }else{
+    expect(new Date().getUTCMinutes()-minute).toBeLessThanOrEqual(0);
+  };
 });

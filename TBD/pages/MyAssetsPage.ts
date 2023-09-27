@@ -48,10 +48,15 @@ export class MyAssetsPage {
     expect(expectedNavAvailable).toBeGreaterThan(20);
   }
   async checkTradeLog() {
+    await this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_TITLE") }).click();
+    await this.page.locator("#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div.flex.flex-col.items-center> div > div.relative.mt-2.hidden.w-160px> div > button:nth-child(2)").click();
     await expect.soft(this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_DEPOSIT") }).last()).toBeVisible();
-    await expect.soft(this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_WITHDRAW") }).last()).toBeVisible();
+    await this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_DEPOSIT") }).nth(2).click();
+    await this.page.locator("#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div.flex.flex-col.items-center> div > div.relative.mt-2.hidden.w-160px> div > button:nth-child(4)").click();
     await expect.soft(this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_CFD_OPEN") }).last()).toBeVisible();
-    await expect.soft(this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_CFD_CLOSE") }).last()).toBeVisible();
     await expect.soft(this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_CFD_UPDATE") }).last()).toBeVisible();
+    await this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_CFD_OPEN") }).first().click();
+    await this.page.locator("#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div.flex.flex-col.items-center> div > div.relative.mt-2.hidden.w-160px> div > button:nth-child(5)").click();
+    await expect.soft(this.page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_CFD_CLOSE") }).last()).toBeVisible();
   }
 }

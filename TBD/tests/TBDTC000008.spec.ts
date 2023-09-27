@@ -91,14 +91,14 @@ test("5. 設定日期區間篩選交易紀錄", async ({ page, context }) => {
   const timestamp = new Date().getTime() + 8 * 60 * 60 * 1000;
   const todayDate = String(new Date(timestamp).getDate());
   if (Number(todayDate) > 7) {
-    console.log(await page
-      .locator(
-        "#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div > div > div:nth-child(2) > div > button > div"
-      )
-      .textContent());
     await page
       .locator(
-        "#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div:nth-child(3)"
+        "#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div.flex.flex-col.items-center > div > div.mt-2.hidden.items-center.space-x-2 > div:nth-child(1) > button"
+      )
+      .click();
+    await page
+      .locator(
+        "#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div.flex.flex-col.items-center> div > div.mt-2.hidden.items-center.space-x-2 > div.relative.flex.h-48px.flex-col.items-start.justify-center.transition-all.duration-200.ease-in-out.bg-darkGray8 > div > div:nth-child(3)"
       )
       .getByText(String(Number(todayDate)-7))
       .click();
@@ -142,7 +142,9 @@ test("6. 點選交易類型切換至入金並點選第一筆紀錄的入金按�
     await walletConnect.sendRequest();
     const myAssetsPage = new MyAssetsPage(page);
     await myAssetsPage.goto();
-    await page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_DEPOSIT") }).first().click();
+    await page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_TITLE") }).click();
+    await page.locator("#__next > div > div:nth-child(17) > main > div > div > div.pt-10 > div:nth-child(4) > div > div.flex.flex-col.items-center> div > div.relative.mt-2.hidden.w-160px> div > button:nth-child(2)").click();
+    await page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_DEPOSIT") }).nth(3).click();
     await expect(page.locator("#depositHistoryModal")).toBeVisible();
 });
 
@@ -159,7 +161,7 @@ test("7. 點選交易類型切換至關倉並點選第一筆紀錄的關倉按�
     await page.getByRole("img",{name: "FACEBOOK"}).first().click();
     const newPage = await pagePromise;
     await newPage.waitForLoadState();
-    expect.soft(page).toHaveTitle(/Facebook/);
+    expect.soft(newPage).toHaveTitle(/Facebook/);
 });
 
 test("8. 點選交易類型切換至開倉並點選第一筆紀錄的更新持倉按鈕，點擊分享至X，再關閉紀錄。", async ({ page, context }) => {

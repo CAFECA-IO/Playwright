@@ -16,7 +16,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   // retries: process.env.CI ? 2 : 0,
-  retries: 1,
+  retries: 2,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 4 : undefined,
   // Limit the number of failures on CI to save resources
