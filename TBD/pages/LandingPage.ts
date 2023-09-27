@@ -12,12 +12,6 @@ export class LandingPage {
 
   async goto() {
     await this.page.goto("./");
-    // need to pay attention to the url
-    // 'http://www.google.com/'
-    // console.log(new URL("/", "http://www.google.com/something/error").toString());
-    // 'http://www.google.com/something/'
-    // console.log(new URL("./", "http://www.google.com/something/error/").toString());
-    // 'http://www.google.com/something/error/'
     await expect.soft(this.page).toHaveTitle(/TideBit DeFi/);
   }
 

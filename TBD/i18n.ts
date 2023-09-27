@@ -6,7 +6,7 @@ import tw from "./locales/tw/common.json";
 export const defaultNS = "common";
 
 i18next.init({
-  debug: true,
+  debug: false,
   fallbackLng: "en",
   defaultNS,
   resources: {

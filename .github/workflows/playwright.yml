@@ -31,7 +31,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: all-blob-reports
-        path: blob-report
+        path: ./TBD/blob-report
         retention-days: 3
         
   merge-reports:
@@ -55,7 +55,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: all-blob-reports
-        path: all-blob-reports
+        path: ./TBD/all-blob-reports
 
     - name: Merge into HTML Report
       run: npx playwright merge-reports --reporter html ./all-blob-reports 
@@ -64,11 +64,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: html-report--attempt-${{ github.run_attempt }}
-        path: playwright-report
+        path: ./TBD/playwright-report
         retention-days: 14
-    # - uses: actions/upload-artifact@v3
-    #   if: always()
-    #   with:
-    #     name: playwright-report
-    #     path: ./TBD/playwright-report
-    #     retention-days: 30
+
