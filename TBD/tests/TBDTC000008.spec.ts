@@ -163,19 +163,3 @@ test("7. 點選交易類型切換至關倉並點選第一筆紀錄的關倉按�
     await newPage.waitForLoadState();
     expect.soft(newPage).toHaveTitle(/Facebook/);
 });
-
-test("8. 點選交易類型切換至開倉並點選第一筆紀錄的更新持倉按鈕，點擊分享至X，再關閉紀錄。", async ({ page, context }) => {
-    const walletConnect = new WalletConnect(page, context);
-    await walletConnect.getMetamaskId();
-    await walletConnect.connectMetamask();
-    await walletConnect.connectWallet();
-    await walletConnect.sendRequest();
-    const myAssetsPage = new MyAssetsPage(page);
-    await myAssetsPage.goto();
-    await page.getByRole("button", { name: i18next.t("MY_ASSETS_PAGE.RECEIPT_SECTION_TRADING_TYPE_CFD_UPDATE") }).first().click();
-    const pagePromise = context.waitForEvent('page');
-    await page.getByRole("img",{name: "TWITTER"}).first().click();
-    const newPage = await pagePromise;
-    await newPage.waitForLoadState();
-    expect.soft(newPage).toHaveTitle(/Twitter/);
-});

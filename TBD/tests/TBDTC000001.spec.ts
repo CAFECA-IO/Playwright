@@ -74,20 +74,13 @@ test("4. 點擊任一篇ETH新聞後，下滑至最下面點擊分享至FB", asy
   const tradePage = new TradePage(page, context);
   await tradePage.goto();
   await tradePage.clickAnncmnt();
-
-  // Next.js css cant be read.
-  // const navAvailable = await page.locator("#__next > div > div:nth-child(17) > div.w-full.text-center.lg\:text-start > nav > div > div > div.flex.items-center > div > div > div:nth-child(6) > div > div > div:nth-child(2) ").textContent();
-  // profile button
   await page.locator("#__next > div > main > div > div > div:nth-child(5) > div > section:nth-child(3)").click();
   await expect.soft(page).toHaveURL(/.*\/news\/.*/);
-  /* 
-  It's better to test manually.
-  */
   await tradePage.clickAnncmnt();
   const pagePromise = context.waitForEvent('page');
   await page.getByRole('img', { name: 'FACEBOOK', exact: true }).click();
   const newPage = await pagePromise;
-  expect.soft(newPage).toHaveURL(/.*facebook.com\/.*/);
+  await expect.soft(newPage).toHaveTitle(/Facebook/);
 });
 test("5. 回到「交易」頁面後，在「看漲」和「看跌」各開一個0.05ETH的倉位，並到「倉位」的 tab確認", async ({ page, extensionId, context }) => {
   const walletConnect = new WalletConnect(page, context);
