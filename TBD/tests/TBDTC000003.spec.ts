@@ -74,41 +74,13 @@ test("3. 點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告�
   await expect.soft(page).toHaveURL(/.*trade/);
   landingPage.goto();
   landingPage.clickAnncmnt();
-  const filesLink = [
-    i18next.t("HOME_PAGE.WHITEPAPER"),
-    i18next.t("HOME_PAGE.DOWNLOAD_REPORT"),
-    i18next.t("HOME_PAGE.COMPREHENSIVE_INCOME_STATEMENT"),
-    i18next.t("HOME_PAGE.BALANCE_SHEET"),
-    i18next.t("HOME_PAGE.CASH_FLOW_STATEMENT"),
-    i18next.t("HOME_PAGE.RED_FLAG_ANALYSIS"),
-  ];
-  const checkfiles = [
-    i18next.t("HOME_PAGE.WHITEPAPER_LINK"),
-    i18next.t("HOME_PAGE.REPORTS_LINK"),
-    i18next.t("HOME_PAGE.COMPREHENSIVE_INCOME_STATEMENT_LINK"),
-    i18next.t("HOME_PAGE.BALANCE_SHEET_LINK"),
-    i18next.t("HOME_PAGE.CASH_FLOW_STATEMENT_LINK"),
-    i18next.t("HOME_PAGE.RED_FLAG_ANALYSIS_LINK"),
-  ];
-  // can be improved to parallel download
-  for (let i = 0; i < filesLink.length; i++) {
-    // Start waiting for download before clicking. Note no await.
-    const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("link", { name: filesLink[i] }).click();
-    const download = await downloadPromise;
-    //no need to download?
-    // await download.saveAs("download/" + download.suggestedFilename());
-    if (download.suggestedFilename() != checkfiles[i]) {
-      console.log(
-        "download file " +
-          i +
-          download.suggestedFilename() +
-          "and" +
-          checkfiles[i] +
-          " is not correct."
-      );
-    }
-  }
+  await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.WHITEPAPER") })).toHaveAttribute("href", i18next.t("HOME_PAGE.WHITEPAPER_LINK"));
+  await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.DOWNLOAD_REPORT") })).toHaveAttribute("href", /.*balance/);
+  await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.COMPREHENSIVE_INCOME_STATEMENT") })).toHaveAttribute("href", /.*comprehensive-income/);
+  await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.BALANCE_SHEET") })).toHaveAttribute("href", /.*balance/);
+  await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.CASH_FLOW_STATEMENT") })).toHaveAttribute("href", /.*cash-flow/);
+  await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.RED_FLAG_ANALYSIS") })).toHaveAttribute("href", i18next.t("HOME_PAGE.RED_FLAG_ANALYSIS_LINK"));
+  
 });
 
 test("4. 確認按鈕連結跳轉網頁正確。", async ({ page }) => {
@@ -137,16 +109,11 @@ test("4. 確認按鈕連結跳轉網頁正確。", async ({ page }) => {
     .soft(page.getByRole("link", {name: i18next.t("HOME_PAGE.ISUNONE_PROMOTION_DESCRIPTION")}))
     .toHaveAttribute("href", /https:\/\/www.isun1.com*/);
   await expect
-    .soft(page.getByRole("button", { name: "app-store" }))
+    .soft(page.getByRole('link', { name: 'app-store' }))
     .toHaveAttribute("href", /.*coming-soon/);
-  // click to open new tab has problem to check
-  // await page.getByRole('button', { name: 'app-store' }).click();
-  // await expect.soft(page).toHaveURL("https://tidebit-defi.com/coming-soon");
-
-  // wait for fix
-  // await expect
-  //   .soft(page.getByRole("button", { name: "google play" }))
-  //   .toHaveAttribute("href", /.*coming-soon/);
+  await expect
+    .soft(page.getByRole("link", { name: "google play" }))
+    .toHaveAttribute("href", /.*coming-soon/);
   await expect
     .soft(page.getByRole("link", { name: "Facebook" }))
     .toHaveAttribute("href", /.*coming-soon/);

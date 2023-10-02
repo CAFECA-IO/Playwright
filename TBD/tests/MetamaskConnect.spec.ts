@@ -5,12 +5,11 @@ import i18next from "../i18n";
 test("Connect Metamask", async ({ page, extensionId, context }) => {
   const lang = await page.evaluate("window.navigator.language;");
   i18next.changeLanguage(String(lang));
-  await page.waitForTimeout(3000);
   await page.goto(
     "chrome://extensions/"
   );
   await page.locator("#devMode").click();
-  extensionId= (await page.locator("#extension-id").textContent()).substring(3);
+  extensionId= (await page.locator("#extension-id").textContent()).substring(3).trim();
   await page.goto("chrome-extension://"+extensionId+"/home.html");
   await page.locator("#onboarding__terms-checkbox").click();
   await expect
@@ -60,7 +59,7 @@ test("Connect Metamask", async ({ page, extensionId, context }) => {
     .click();
   const newPage1 = await pagePromise1;
   await newPage1.goto(
-    "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html"
+    "chrome-extension://"+extensionId+"/popup.html"
   );
   await newPage1.getByTestId("page-container-footer-next").click();
   await newPage1.getByTestId("page-container-footer-next").click();
@@ -72,7 +71,7 @@ test("Connect Metamask", async ({ page, extensionId, context }) => {
     .click();
   const newPage2 = await pagePromise2;
   await newPage2.goto(
-    "chrome-extension://epeaoodlijfnfhkcdeomldjapknliknd/popup.html"
+    "chrome-extension://"+extensionId+"/popup.html"
   );
   await newPage2.getByTestId("signature-request-scroll-button").click();
   await newPage2.getByTestId("page-container-footer-next").click();

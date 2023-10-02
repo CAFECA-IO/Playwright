@@ -17,6 +17,11 @@ export class TradePage {
     await expect.soft(this.page).toHaveTitle(/CFD/);
   }
 
+  async gotoBTC() {
+    await this.page.goto("./trade/cfd/btc-usdt");
+    await expect.soft(this.page).toHaveTitle(/CFD/);
+  }
+
   async clickAnncmnt() {
     if (this.getAnncmnt) {
       await this.getAnncmnt.click();
@@ -52,6 +57,8 @@ export class TradePage {
     await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button > span > svg").click();
     newPage.close();
   }
+
+  // number="1" means the last position
   async updatePosition(extensionId ,number = "1") {
     await this.page.getByRole('button', { name: i18next.t("TRADE_PAGE.POSITION_TAB") }).click();
     await this.page.locator("#__next > div > main > div > div:nth-child(3) > div > div > div > div > div:nth-last-child("+number+")").click();
@@ -70,7 +77,7 @@ export class TradePage {
     );
     await newPage.getByTestId("signature-request-scroll-button").click();
     await newPage.getByTestId("page-container-footer-next").click();
-    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button").click();
+    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button > span > svg").click();
     newPage.close();
   }
   async closePosition(extensionId ,number = "1") {
