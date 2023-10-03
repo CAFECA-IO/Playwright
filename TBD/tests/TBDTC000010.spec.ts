@@ -37,12 +37,15 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
   await leaderboardPage.goto();
   await leaderboardPage.clickAnncmnt();
   const today = new Date();
+  console.log(today);
   const dayOfWeek = new Date().getDay();
   const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
   const lastWeekStart = new Date(today);
   lastWeekStart.setDate(today.getDate() - daysToSubtract - 8);
+  console.log(lastWeekStart);
   const lastWeekEnd = new Date(lastWeekStart);
   lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+  console.log(lastWeekEnd);
   const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
   await page
@@ -54,7 +57,7 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
     )
   ).toContainText(
-    today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate()
+    today.toISOString().slice(0,10)
   );
   await page
     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.WEEKLY") })
@@ -63,12 +66,12 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
     await page.locator(
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base> span:nth-child(1)"
     )
-  ).toContainText(lastWeekStart.getFullYear()+"-"+(lastWeekStart.getMonth()+1)+"-"+lastWeekStart.getDate());
+  ).toContainText(lastWeekStart.toISOString().slice(0,10));
   await expect.soft(
     await page.locator(
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span:nth-child(2)"
     )
-  ).toContainText(lastWeekEnd.getFullYear()+"-"+(lastWeekEnd.getMonth()+1)+"-"+lastWeekEnd.getDate());
+  ).toContainText(lastWeekEnd.toISOString().slice(0,10));
   await page
     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.MONTHLY") })
     .click();

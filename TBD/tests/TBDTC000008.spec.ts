@@ -170,5 +170,6 @@ test("7. 點選交易類型切換至關倉並點選第一筆紀錄的關倉按�
   await page.getByRole("img", { name: "FACEBOOK" }).first().click();
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
-  expect.soft(newPage).toHaveTitle(/Facebook/);
+  await expect.soft(newPage).toHaveURL(/facebook.com/);
+  await expect.soft(newPage).toHaveTitle(/Facebook/);
 });

@@ -29,7 +29,7 @@ test("Trade example", async ({ page, context }) => {
     // go to BTC trade page
     await tradePage.gotoBTC();
     await tradePage.clickAnncmnt();
-    await tradePage.inputAmount("0.01");
+    await tradePage.inputAmount("0.001");
     // open short position
     await tradePage.openShortPosition(walletConnect.extensionId);
     // update position default value is 1 means the last position
