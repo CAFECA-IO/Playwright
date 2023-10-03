@@ -36,7 +36,6 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
   const leaderboardPage = new LeaderboardPage(page);
   await leaderboardPage.goto();
   await leaderboardPage.clickAnncmnt();
-
   const today = new Date();
   const dayOfWeek = new Date().getDay();
   const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
@@ -44,6 +43,8 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
   lastWeekStart.setDate(today.getDate() - daysToSubtract - 8);
   const lastWeekEnd = new Date(lastWeekStart);
   lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
   await page
     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.DAILY") })
     .click();
@@ -53,7 +54,7 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
     )
   ).toContainText(
-    today.getFullYear + "-" + today.getMonth + "-" + today.getDate
+    today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate()
   );
   await page
     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.WEEKLY") })
@@ -62,12 +63,12 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
     await page.locator(
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base> span:nth-child(1)"
     )
-  ).toContainText(lastWeekStart.getFullYear+"-"+lastWeekStart.getMonth+"-"+lastWeekStart.getDate);
+  ).toContainText(lastWeekStart.getFullYear()+"-"+(lastWeekStart.getMonth()+1)+"-"+lastWeekStart.getDate());
   await expect.soft(
     await page.locator(
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span:nth-child(2)"
     )
-  ).toContainText(lastWeekEnd.getFullYear+"-"+lastWeekEnd.getMonth+"-"+lastWeekEnd.getDate);
+  ).toContainText(lastWeekEnd.getFullYear()+"-"+(lastWeekEnd.getMonth()+1)+"-"+lastWeekEnd.getDate());
   await page
     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.MONTHLY") })
     .click();
@@ -75,7 +76,7 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
     await page.locator(
       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
     )
-  ).toContainText("");
+  ).toContainText(monthNames[today.getMonth()-1]+" "+today.getFullYear());
 });
 
 test("4. 點擊此帳號的地址後點擊入金徽章並將徽章分享至FB。", async ({

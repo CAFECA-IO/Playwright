@@ -62,13 +62,9 @@ export class TradePage {
   async updatePosition(extensionId ,number = "1") {
     await this.page.getByRole('button', { name: i18next.t("TRADE_PAGE.POSITION_TAB") }).click();
     await this.page.locator("#__next > div > main > div > div:nth-child(3) > div > div > div > div > div:nth-last-child("+number+")").click();
-    // #__next > div > div:nth-child(11) > div.fixed.inset-0.z-80.flex.items-center.justify-center.overflow-y-auto.overflow-x-hidden.outline-none.backdrop-blur-sm.focus\:outline-none > div > div > div.relative.flex.flex-auto.flex-col.items-center.px-10.pt-0 > div.mx-10.mt-3.flex-col.text-xs.leading-relaxed.text-lightWhite > div.mb-2.h-50px > div.flex.items-center.justify-between > div:nth-child(3) > div > div
     await this.page.locator('.bg-white').first().click();
-    // await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(3) > div > div").click();
-    await this.page.locator("#__next > div > div:nth-child(11)").locator("div.mb-5.h-70px > div.flex.items-center.justify-between > div:nth-child(3) > div > div").click();
     await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > input").check();
     await this.page.getByRole('button', { name: i18next.t("POSITION_MODAL.UPDATE_POSITION_TITLE") }).click();
-    // const pagePromise = this.context.waitForEvent('page');
     await this.page.getByRole('button', { name: i18next.t("POSITION_MODAL.CONFIRM_BUTTON") }).click();
     const pagePromise = this.context.newPage();
     const newPage = await pagePromise;

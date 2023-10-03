@@ -73,7 +73,7 @@ test("3. 點擊首圖上的開始和信箱聯絡按鈕、白皮書和 AI 報告�
     .click();
   await expect.soft(page).toHaveURL(/.*trade/);
   landingPage.goto();
-  landingPage.clickAnncmnt();
+  // landingPage.clickAnncmnt();
   await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.WHITEPAPER") })).toHaveAttribute("href", i18next.t("HOME_PAGE.WHITEPAPER_LINK"));
   await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.DOWNLOAD_REPORT") })).toHaveAttribute("href", /.*balance/);
   await expect.soft(page.getByRole("link", { name: i18next.t("HOME_PAGE.COMPREHENSIVE_INCOME_STATEMENT") })).toHaveAttribute("href", /.*comprehensive-income/);
