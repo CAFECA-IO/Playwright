@@ -71,10 +71,11 @@ This is the  end to end test for [TideBit-Defi](https://tidebit-defi.com/). To s
 
 - Reference: [Playwright CI GitHub Actions](https://playwright.dev/docs/ci-intro#html-report)
 
-### Costomize the trade test
+### Costomize the trade test with your own wallet
 
-1. Create a test file in tests folder named with "*.spec.ts"
-2. Example of trade case
+1. Change the Mnemonic Phrase and password in .auth/metamask.json
+2. Create a test file in tests folder named with "*.spec.ts"
+3. Example of trade case
 
 ```typescript
 import { test, expect } from "../fixtures";
