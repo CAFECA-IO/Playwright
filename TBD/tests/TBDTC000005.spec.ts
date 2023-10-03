@@ -30,7 +30,6 @@ test("1. 進入 TideBit-DeFi 首頁，確定語言為英文，點擊錢包連接
 
 test("2. 至metamask切換到ETH以外的鏈上後，發送確認身份與API授權簽名請求。", async ({
   page,
-  extensionId,
   context,
 }) => {
   const walletConnect = new WalletConnect(page, context);
@@ -75,7 +74,6 @@ test("2. 至metamask切換到ETH以外的鏈上後，發送確認身份與API授
 
 test("3. 至metamask切換到ETH主鏈上，重新發送請求。", async ({
   page,
-  extensionId,
   context,
 }) => {
   const walletConnect = new WalletConnect(page, context);
@@ -87,7 +85,6 @@ test("3. 至metamask切換到ETH主鏈上，重新發送請求。", async ({
 
 test("4. 紀錄導覽列中可用餘額後，在右上角profile點擊入金後於我的資產確認。", async ({
   page,
-  extensionId,
   context,
 }) => {
   const walletConnect = new WalletConnect(page, context);

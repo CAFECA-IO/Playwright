@@ -27,7 +27,7 @@ export class TradePage {
       await this.getAnncmnt.click();
     }
   }
-  async inputAmount(amount ="0.05") {
+  async inputAmount(amount ="0.03") {
     await this.page.getByPlaceholder("amount input").fill(amount);
   }
 

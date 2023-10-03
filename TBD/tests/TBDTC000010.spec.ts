@@ -32,51 +32,51 @@ test("2. 點擊前三名查看用戶資料後關閉。", async ({ page, context 
   await page.locator("#personalInfoModal > div > button > span > svg").click();
 });
 
-// test("3. 切換日、週、月排名，停留在日排名。", async ({ page, context }) => {
-//   const leaderboardPage = new LeaderboardPage(page);
-//   await leaderboardPage.goto();
-//   await leaderboardPage.clickAnncmnt();
+test("3. 切換日、週、月排名，停留在日排名。", async ({ page, context }) => {
+  const leaderboardPage = new LeaderboardPage(page);
+  await leaderboardPage.goto();
+  await leaderboardPage.clickAnncmnt();
 
-//   const today = new Date();
-//   const dayOfWeek = new Date().getDay();
-//   const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-//   const lastWeekStart = new Date(today);
-//   lastWeekStart.setDate(today.getDate() - daysToSubtract - 8);
-//   const lastWeekEnd = new Date(lastWeekStart);
-//   lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
-//   await page
-//     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.DAILY") })
-//     .click();
-//   // cant locate the text
-//   await expect.soft(
-//     await page.locator(
-//       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
-//     )
-//   ).toContainText(
-//     today.getFullYear + "-" + today.getMonth + "-" + today.getDate
-//   );
-//   await page
-//     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.WEEKLY") })
-//     .click();
-//   await expect.soft(
-//     await page.locator(
-//       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base> span:nth-child(1)"
-//     )
-//   ).toContainText(lastWeekStart.getFullYear+"-"+lastWeekStart.getMonth+"-"+lastWeekStart.getDate);
-//   await expect.soft(
-//     await page.locator(
-//       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span:nth-child(2)"
-//     )
-//   ).toContainText(lastWeekEnd.getFullYear+"-"+lastWeekEnd.getMonth+"-"+lastWeekEnd.getDate);
-//   await page
-//     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.MONTHLY") })
-//     .click();
-//   await expect.soft(
-//     await page.locator(
-//       "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
-//     )
-//   ).toContainText("");
-// });
+  const today = new Date();
+  const dayOfWeek = new Date().getDay();
+  const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const lastWeekStart = new Date(today);
+  lastWeekStart.setDate(today.getDate() - daysToSubtract - 8);
+  const lastWeekEnd = new Date(lastWeekStart);
+  lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+  await page
+    .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.DAILY") })
+    .click();
+  // cant locate the text
+  await expect.soft(
+    await page.locator(
+      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
+    )
+  ).toContainText(
+    today.getFullYear + "-" + today.getMonth + "-" + today.getDate
+  );
+  await page
+    .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.WEEKLY") })
+    .click();
+  await expect.soft(
+    await page.locator(
+      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base> span:nth-child(1)"
+    )
+  ).toContainText(lastWeekStart.getFullYear+"-"+lastWeekStart.getMonth+"-"+lastWeekStart.getDate);
+  await expect.soft(
+    await page.locator(
+      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span:nth-child(2)"
+    )
+  ).toContainText(lastWeekEnd.getFullYear+"-"+lastWeekEnd.getMonth+"-"+lastWeekEnd.getDate);
+  await page
+    .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.MONTHLY") })
+    .click();
+  await expect.soft(
+    await page.locator(
+      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
+    )
+  ).toContainText("");
+});
 
 test("4. 點擊此帳號的地址後點擊入金徽章並將徽章分享至FB。", async ({
   page,

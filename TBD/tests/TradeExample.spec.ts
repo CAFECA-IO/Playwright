@@ -9,7 +9,7 @@ test.beforeEach(async ({ context, page }) => {
   i18next.changeLanguage(String(lang));
 });
 
-test("Trade example", async ({ page, extensionId, context }) => {
+test("Trade example", async ({ page, context }) => {
     //new a walletConnect instance
     const walletConnect = new WalletConnect(page, context);
     // the following 4 lines are for connecting metamask

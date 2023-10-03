@@ -2,14 +2,14 @@ import { test, expect } from "../fixtures";
 import metamask from "../.auth/metamask.json";
 import i18next from "../i18n";
 
-test("Connect Metamask", async ({ page, extensionId, context }) => {
+test("Connect Metamask", async ({ page, context }) => {
   const lang = await page.evaluate("window.navigator.language;");
   i18next.changeLanguage(String(lang));
   await page.goto(
     "chrome://extensions/"
   );
   await page.locator("#devMode").click();
-  extensionId= (await page.locator("#extension-id").textContent()).substring(3).trim();
+  const extensionId= (await page.locator("#extension-id").textContent()).substring(3).trim();
   await page.goto("chrome-extension://"+extensionId+"/home.html");
   await page.locator("#onboarding__terms-checkbox").click();
   await expect
@@ -43,7 +43,6 @@ test("Connect Metamask", async ({ page, extensionId, context }) => {
   await page.getByTestId("pin-extension-next").click();
   await page.getByTestId("pin-extension-done").click();
   await page.getByTestId("popover-close").click();
-
   await page.goto("./");
   page
     .getByRole("button", { name: i18next.t("ANNOUNCEMENT_MODAL.OK_BUTTON") })
