@@ -59,6 +59,18 @@ This is the  end to end test for [TideBit-Defi](https://tidebit-defi.com/). To s
     npx playwright show-report
     ```
 
+### Read the test report
+
+1. Download the test report from github action.
+2. Put the report in the folder which is installed the playwright.
+3. Run the following command to show the report.
+
+    ```node.js
+    npx playwright show-report {articaft name}
+    ```
+
+- Reference: [Playwright CI GitHub Actions](https://playwright.dev/docs/ci-intro#html-report)
+
 ### Costomize the trade test
 
 1. Create a test file in tests folder named with "*.spec.ts"
