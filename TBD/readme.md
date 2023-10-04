@@ -28,7 +28,6 @@ This is the  end to end test for [TideBit-Defi](https://tidebit-defi.com/). To s
     git checkout develop
     ```
 
-
 3. Change directory to the repository
 
     ```bash

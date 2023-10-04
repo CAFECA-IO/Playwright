@@ -60,7 +60,6 @@ test("3. 至ETH交易頁面，下滑點擊白皮書與官方網站。", async ({
 }) => {
   const tradePage = new TradePage(page, context);
   await tradePage.goto();
-  await tradePage.clickAnncmnt();
   await expect.soft(page.getByRole("link", { name: i18next.t("TRADE_PAGE.CRYPTO_SUMMARY_WHITEPAPER") })).toHaveAttribute("href",/.*whitepaper/);
   await expect.soft(page.getByRole("link", { name: i18next.t("TRADE_PAGE.CRYPTO_SUMMARY_WEBSITE") })).toHaveAttribute("href",/https:\/\/ethereum.org/);
 });
@@ -122,7 +121,6 @@ test("7. 點擊倒數計時的圈圈，將持倉關閉，並查看「歷史紀�
   await page.getByRole('button', { name: i18next.t("TRADE_PAGE.POSITION_TAB_HISTORY") }).click();
   const minutetext = await page.locator("#__next > div > main > div > div.pointer-events-none.fixed.right-0.top-82px.z-10.flex.overflow-x-hidden.overflow-y-hidden.outline-none > div > div > div > div > div:nth-child(1) > div.mt-3.text-xs > div > div.w-48px > div:nth-child(2)").textContent();
   const minute = Number(minutetext.substring(3))
-  console.log(minute)
   if(new Date().getUTCMinutes()>0){
     expect(new Date().getUTCMinutes()-minute).toBeGreaterThanOrEqual(0);
     expect(new Date().getUTCMinutes()-minute).toBeLessThanOrEqual(2);
