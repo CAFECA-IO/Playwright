@@ -41,7 +41,7 @@ export class TradePage {
     );
     await newPage.getByTestId("signature-request-scroll-button").click();
     await newPage.getByTestId("page-container-footer-next").click();
-    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button > span > svg").click();
+    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div.flex > button ").click();
     newPage.close();
   }
   async openShortPosition(extensionId) {
@@ -54,7 +54,7 @@ export class TradePage {
     );
     await newPage.getByTestId("signature-request-scroll-button").click();
     await newPage.getByTestId("page-container-footer-next").click();
-    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button > span > svg").click();
+    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div.flex > button > svg").click();
     newPage.close();
   }
 
@@ -64,16 +64,16 @@ export class TradePage {
     await this.page.locator("#__next > div > main > div > div:nth-child(3) > div > div > div > div > div:nth-last-child("+number+")").click();
     await this.page.locator('.bg-white').first().click();
     await this.page.locator("#__next > div > div:nth-child(11) > div > div > div.flex-col.items-center > div.mt-3.flex-col.text-xs.leading-relaxed.text-lightWhite > div.mb-5.h-70px > div:nth-child(3) > div > input").check();
-    const pagePromise = this.context.newPage();
     await this.page.getByRole('button', { name: i18next.t("POSITION_MODAL.UPDATE_POSITION_TITLE") }).click();
     await this.page.getByRole('button', { name: i18next.t("POSITION_MODAL.CONFIRM_BUTTON") }).click();
+    const pagePromise = this.context.newPage();
     const newPage = await pagePromise;
     await newPage.goto(
       "chrome-extension://" + extensionId + "/popup.html"
     );
     await newPage.getByTestId("signature-request-scroll-button").click();
     await newPage.getByTestId("page-container-footer-next").click();
-    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button > span > svg").click();
+    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div.flex > button > svg").click();
     newPage.close();
   }
   async closePosition(extensionId ,number = "1") {
@@ -88,7 +88,7 @@ export class TradePage {
     );
     await newPage.getByTestId("signature-request-scroll-button").click();
     await newPage.getByTestId("page-container-footer-next").click();
-    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div > button > span > svg").click();
+    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div.flex > button > svg").click();
     newPage.close();
   }
 }
