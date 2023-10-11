@@ -63,7 +63,7 @@ export class TradePage {
     await this.page.getByRole('button', { name: i18next.t("TRADE_PAGE.POSITION_TAB") }).click();
     await this.page.locator("#__next > div > main > div > div:nth-child(3) > div > div > div > div > div:nth-last-child("+number+")").click();
     await this.page.locator('.bg-white').first().click();
-    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > input").check();
+    await this.page.locator("#__next > div > div:nth-child(11) > div > div > div.flex-col.items-center > div.mt-3.flex-col.text-xs.leading-relaxed.text-lightWhite > div.mb-5.h-70px > div:nth-child(3) > div > input").check();
     const pagePromise = this.context.newPage();
     await this.page.getByRole('button', { name: i18next.t("POSITION_MODAL.UPDATE_POSITION_TITLE") }).click();
     await this.page.getByRole('button', { name: i18next.t("POSITION_MODAL.CONFIRM_BUTTON") }).click();

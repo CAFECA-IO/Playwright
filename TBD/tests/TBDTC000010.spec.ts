@@ -44,17 +44,22 @@ test("3. 切換日、週、月排名，停留在日排名。", async ({ page, co
   lastWeekStart.setDate(today.getDate() - daysToSubtract - 8);
   console.log(lastWeekStart);
   const lastWeekEnd = new Date(lastWeekStart);
-  lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+  lastWeekEnd.setDate(lastWeekStart.getDate() + 7);
   console.log(lastWeekEnd);
   const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
+  await expect.soft(
+    await page.locator(
+      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block > span"
+    )
+  ).toBeVisible();
   await page
     .getByRole("button", { name: i18next.t("LEADERBOARD_PAGE.DAILY") })
     .click();
   // cant locate the text
   await expect.soft(
     await page.locator(
-      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block.text-base > span"
+      "#__next > div > div:nth-child(17) > main > div > div > div.min-h-screen > div > div.inline-block > span"
     )
   ).toContainText(
     today.toISOString().slice(0,10)
